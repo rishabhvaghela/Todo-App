@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TODO LIST</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0b0f1a;
+            --bg-secondary: #12182b;
+            --accent: #6cf2c3d0;
+            --accent-glow: rgba(108, 242, 194, 0.6);
+            --text-primary: #ffffff;
+            --text-muted: #9aa4bf;
+            --error: #ff2727;
+            --radius: 14px;
+            --blur: 14px;
+            --transition: 0.35s ease;
+            --font-main: "Inter", system-ui, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            background:
+                radial-gradient(circle at top, #183e22f0 0%, transparent 40%),
+                radial-gradient(circle at bottom, #3c0b0b 0%, transparent 50%),
+                radial-gradient(circle at right, #402664f0 0%, transparent 40%),
+                radial-gradient(circle at left, #491414f0 0%, transparent 40%),
+                var(--bg-primary);
+            font-family: var(--font-main);
+            color: var(--text-primary);
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.038);
+            backdrop-filter: blur(5px);
+            border-radius: 30px;
+            width: 400px;
+            height: 150px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            top: 50px;
+            overflow: auto;
+            scroll-behavior: smooth;
+        }
+
+        ::-webkit-scrollbar {
+            width: 0px;
+        }
+
+        .heading {
+            position: absolute;
+            top: 15px;
+
+        }
+
+        .data {
+            position: absolute;
+            bottom: 17%;
+        }
+
+        .todo {
+            /* margin-top: 20px; */
+            font-size: 17px;
+            padding: 10px;
+            border: none;
+            background-color: transparent;
+            color: white;
+            outline: none;
+        }
+
+        .underline {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 2px;
+            width: 0;
+            background: linear-gradient(130deg, #c3aed1 20%, #5eff66 80%);
+            /* Apna color daaliye */
+            transition: width 0.3s ease;
+            /* Ya keyframes use kariye */
+        }
+
+        .todo:focus +.underline {
+            width: 70%;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                width: 0%;
+            }
+
+            to {
+                width: 70%;
+            }
+        }
+
+
+        .add-btn {
+            /* background-color: rgb(127, 175, 155); */
+            background-color: var(--accent);
+            /* color: rgb(239, 230, 216); */
+            color: var(--text-primary);
+            font-family: var(--font-main);
+            padding: 13px;
+            width: 80px;
+            border-radius: 10px;
+            box-shadow: rgba(0, 0, 0, 0.17) 0px -23px 25px 0px inset,
+                rgba(0, 0, 0, 0.15) 0px -36px 30px 0px inset,
+                rgba(0, 0, 0, 0.1) 0px -79px 40px 0px inset,
+                rgba(0, 0, 0, 0.06) 0px 2px 1px,
+                rgba(0, 0, 0, 0.09) 0px 4px 2px,
+                rgba(0, 0, 0, 0.09) 0px 8px 4px,
+                rgba(0, 0, 0, 0.09) 0px 16px 8px,
+                rgba(0, 0, 0, 0.09) 0px 32px 16px;
+            font-size: 17px;
+            border: none;
+            transition: all 0.3s cubic-bezier(0.4, 0.09, 0.59, 1.35);
+            margin-left: 17px;
+        }
+
+        .add-btn:active {
+            transform: translateY(5px);
+            background-color: rgb(69, 255, 69);
+
+        }
+
+
+        .todo-list {
+            width: 400px;
+            /* background-color: red; */
+            font-size: 20px;
+            font-family: var(--font-main);
+            padding: 5px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+
+        .list-container {
+            background-color: rgba(255, 255, 255, 0.038);
+            backdrop-filter: blur(5px);
+            border-radius: 30px;
+            width: 400px;
+            max-height: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: auto;
+            scroll-behavior: smooth;
+        }
+
+        .list {
+            position: absolute;
+            top: 35%;
+        }
+
+        .list ul {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            /* border: 1px solid white;  */
+        }
+
+        .list li {
+            text-decoration: none;
+            list-style: none;
+            padding: 10px;
+        }
+
+        .check {
+            position: absolute;
+            left: 10%;
+            height: 20px;
+            width: 20px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 50%;
+            border: 1px solid #9e9898;
+        }
+
+        .check-checked {
+            background-image: url(check.png);
+        }
+
+        ul li.checked {
+            color: rgb(50, 227, 50);
+        }
+
+        .dlt-btn {
+            background-color: rgb(179, 13, 13);
+            color: var(--text-primary);
+            font-family: var(--font-main);
+            padding: 10px;
+            /* margin-right: 15px; */
+            width: 80px;
+            border-radius: 10px;
+            border: none;
+            transition: all 0.3s cubic-bezier(0.4, 0.09, 0.59, 1.35);
+            box-shadow: rgba(0, 0, 0, 0.17) 0px -23px 25px 0px inset,
+                rgba(0, 0, 0, 0.15) 0px -36px 30px 0px inset,
+                rgba(0, 0, 0, 0.1) 0px -79px 40px 0px inset,
+                rgba(0, 0, 0, 0.06) 0px 2px 1px,
+                rgba(0, 0, 0, 0.09) 0px 4px 2px,
+                rgba(0, 0, 0, 0.09) 0px 8px 4px,
+                rgba(0, 0, 0, 0.09) 0px 16px 8px,
+                rgba(0, 0, 0, 0.09) 0px 32px 16px;
+        }
+
+        .dlt-btn:active {
+            transform: translateY(5px);
+            background-color: var(--error);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="heading">
+            <h1>Todo List</h1>
+        </div>
+        <div class="data">
+            <input type="text" id="todo" class="todo" placeholder="Enter your task" autocomplete="off">
+            <span class="underline"></span>
+            <button type="submit" id="btn" class="add-btn">ADD</button>
+        </div>
+    </div>
+    <div class="list list-container">
+        <ul id="todo-container">
+        </ul>
+    </div>
+
+    <script src="todo.js"></script>
+</body>
+
+</html>
